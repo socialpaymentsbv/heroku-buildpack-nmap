@@ -1,18 +1,18 @@
 #!/bin/bash
 
+BUILD_PATH=$(cd $1 && pwd)
+
 NMAP_VERSION="7.60"
 if [ -f $3/NMAP_VERSION ]; then
   NMAP_VERSION="$(cat $3/NMAP_VERSION)"
 fi
 
 echo "-----> Installing nmap $NMAP_VERSION"
-[ -d .downloads ] || mkdir .downloads
-cd .downloads
 curl -s -O https://nmap.org/dist/nmap-$NMAP_VERSION.tar.bz2
 bzip2 -cd nmap-$NMAP_VERSION.tar.bz2 | tar xvf -
 cd nmap-$NMAP_VERSION
-./configure --prefix=$1/bin/nmap
+./configure --prefix=$BUILD_PATH/bin/nmap
 make
 make install
 
-ln -s $1/bin/nmap/bin/ncat $1/bin/ncat
+ln -s $BUILD_PATH/bin/nmap/bin/ncat $BUILD_PATH/bin/ncat
