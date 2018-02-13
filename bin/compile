@@ -14,5 +14,3 @@ cd nmap-$NMAP_VERSION
 ./configure --prefix=$BUILD_PATH/bin/nmap
 make
 make install
-
-ln -s $BUILD_PATH/bin/nmap/bin/ncat $BUILD_PATH/bin/ncat
