@@ -3,24 +3,26 @@
 mkdir -p $1 $2 $3
 BUILD_PATH=$(cd $1 && pwd)
 CACHE_PATH=$(cd $2 && pwd)
+BUILDPACK_PREFIX=nmap
 
 NMAP_VERSION="7.60"
 if [ -f $3/NMAP_VERSION ]; then
   NMAP_VERSION="$(cat $3/NMAP_VERSION)"
 fi
 NMAP_NAME=nmap-$NMAP_VERSION
+echo $CACHE_PATH/$BUILDPACK_PREFIX/$NMAP_NAME/bin/nmap
 
-if [ ! -f $CACHE_PATH/$NMAP_NAME/bin/nmap ]; then
+if [ ! -f $CACHE_PATH/$BUILDPACK_PREFIX/$NMAP_NAME/bin/nmap ]; then
   echo "-----> Installing $NMAP_NAME"
   curl -s -O https://nmap.org/dist/$NMAP_NAME.tar.bz2
   bzip2 -cd $NMAP_NAME.tar.bz2 | tar xf -
   cd $NMAP_NAME
-  ./configure --prefix=$CACHE_PATH/$NMAP_NAME
+  ./configure --prefix=$CACHE_PATH/$BUILDPACK_PREFIX/$NMAP_NAME
   make
   make install
 else
   echo "-----> Using cached nmap version"
 fi
 
-mkdir -p $BUILD_PATH/nmap/bin
-cp -r $CACHE_PATH/${NMAP_NAME}/bin/ $BUILD_PATH/nmap/bin
+mkdir -p $BUILD_PATH/$BUILDPACK_PREFIX/bin
+cp -r $CACHE_PATH/$BUILDPACK_PREFIX/$NMAP_NAME/bin/ $BUILD_PATH/$BUILDPACK_PREFIX/bin
