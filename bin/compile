@@ -14,15 +14,7 @@ echo "$CACHE_PATH"/"$BUILDPACK_PREFIX"/"$NMAP_NAME"/bin/nmap
 
 if [ ! -f "$CACHE_PATH"/"$BUILDPACK_PREFIX"/"$NMAP_NAME"/bin/nmap ]; then
   echo "-----> Installing $NMAP_NAME"
-  curl -s -O https://nmap.org/dist/"$NMAP_NAME".tar.bz2
-  bzip2 -cd "$NMAP_NAME".tar.bz2 | tar xf -
-  cd "$NMAP_NAME"
-  ./configure --prefix="$CACHE_PATH"/"$BUILDPACK_PREFIX"/"$NMAP_NAME"
-  make
-  make install
+  apt-get install nmap -y
 else
   echo "-----> Using cached nmap version"
 fi
-
-mkdir -p "$BUILD_PATH"/"$BUILDPACK_PREFIX"/bin
-cp "$CACHE_PATH"/"$BUILDPACK_PREFIX"/"$NMAP_NAME"/bin/* "$BUILD_PATH"/"$BUILDPACK_PREFIX"/bin
